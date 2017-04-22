@@ -6,7 +6,7 @@
   </h1>
 </div>
 
-<%= form_tag exercise_results_path(@exercise, :sort => params[:sort]) do %>
+<%= form_tag exercise_results_path(@exercise, sort: params[:sort]) do %>
   <div class="well">
     <p>
       If multiple reviews exist for the same group, include<br />
@@ -15,10 +15,8 @@
     </p>
 
     <p>
-      <%= button_tag :name => :format, :value => 'html', :class => 'btn btn-primary' do %>Refresh view<% end %>
-      <!--
-      <%= button_tag :name => :format, :value => 'csv', :class => 'btn btn-default' do %><i class="icon-download"></i> Download CSV spreadsheet<% end %>
-      -->
+      <%= button_tag name: :format, value: 'html', class: 'btn btn-primary' do %>Refresh view<% end %>
+      <%= button_tag name: :format, value: 'csv', class: 'btn btn-default' do %><i class="icon-download"></i> Download CSV spreadsheet<% end %>
     </p>
   </div>
 <% end %>
@@ -26,26 +24,30 @@
 <table class="table table-condensed table-bordered table-striped">
   <thead>
     <tr>
-      <%= result_table_heading('student ID', :sort => 'student-id') %>
-      <%= result_table_heading('first name', :sort => 'first-name') %>
-      <%= result_table_heading('last name', :sort => 'last-name') %>
-      <%= result_table_heading('email', :sort => 'email') %>
-      <%= result_table_heading('grade', :sort => 'grade') %>
+      <%= result_table_heading('student ID', sort: 'student-id') %>
+      <%= result_table_heading('first name', sort: 'first-name') %>
+      <%= result_table_heading('last name', sort: 'last-name') %>
+      <%= result_table_heading('email', sort: 'email') %>
+      <%= result_table_heading('grade', sort: 'grade') %>
+      <%= result_table_heading('grade disagreement', sort: 'grade-range') %>
       <% if params[:include] == 'all' %>
-        <%= result_table_heading('submitted_at', :sort => 'submitted-at') %>
-        <%= result_table_heading('reviewer', :sort => 'reviewer') %>
+        <%= result_table_heading('submitted_at', sort: 'submitted-at') %>
+        <%= result_table_heading('reviewer', sort: 'reviewer') %>
       <% end %>
-      <% if @exercise.peer_review_goal && @exercise.peer_review_goal > 0 && params[:include] != 'all' %>
-        <%= result_table_heading('peer review count (*)', :sort => 'peer-review-count') %>
+      <% if @exercise.peer_review? && params[:include] != 'all' %>
+        <%= result_table_heading('peer review count (*)', sort: 'peer-review-count') %>
       <% end %>
-      <%= result_table_heading('notes', :sort => 'notes') %>
+      <%= result_table_heading('notes', sort: 'notes') %>
     </tr>
   </thead>
   <tbody>
     <% @results.each do |result| %>
       <tr>
         <% if @course_instance.submission_policy == 'lti' %>
-          <td><% if result[:member].user %><%= result[:member].user.lti_user_id %><% end %></td>
+          <td>
+            <% if result[:member].user %><%= result[:member].user.lti_user_id %><% end %>
+            <% unless result[:member].studentnumber.nil? %>(<%= result[:member].studentnumber %>)<% end %>
+          </td>
         <% else %>
           <td><%= result[:member].studentnumber %></td>
         <% end %>
@@ -53,11 +55,14 @@
         <td><% if result[:member].user %><%= result[:member].user.lastname %><% end %></td>
         <td><%= result[:member].email %></td>
         <td><%= result[:grade] %></td>
+        <% if params[:include] != 'all' %>
+          <td><%= result[:grade_range] %></td>
+        <% end %>
         <% if params[:include] == 'all' %>
           <td><% if result[:submission] %><%= result[:submission].created_at %><% end %></td>
           <td><% if result[:reviewer] %><%= result[:reviewer].name  %> <% unless result[:reviewer].studentnumber.blank? %>(<%= result[:reviewer].studentnumber %>)<% end %><% end %></td>
         <% end %>
-        <% if @exercise.peer_review_goal && @exercise.peer_review_goal > 0 && params[:include] != 'all' %><td>
+        <% if @exercise.peer_review? && params[:include] != 'all' %><td>
           <%= result[:finished_peer_review_count] %>
           <% if result[:finished_peer_review_count] != result[:created_peer_review_count] %>(<%= result[:created_peer_review_count] %>)<% end %>
         </td><% end %>
@@ -67,6 +72,6 @@
   </tbody>
 </table>
 
-<% if @exercise.peer_review_goal && @exercise.peer_review_goal > 0 && params[:include] != 'all' %>
+<% if @exercise.peer_review? && params[:include] != 'all' %>
   <p>* number of unfinished peer reviews in parenthesis</p>
 <% end %>

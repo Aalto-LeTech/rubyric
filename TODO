@@ -40,6 +40,26 @@ UPDATE course_instances set submission_policy='lti' where id=1;
 
 näytä lti-kursseille tuloslistassa lti_user_id
 
+= Metsähovi peer review =
+
+1  ratingien pisteiden kirjautuminen LTI:n kautta
+2  ignore Haka login when user arrives through LTI (allow teachers to access student view for testing)
+3  invalidate-nappula pois näkyvistä opiskelijoilta
+ok vertaisarviointinäkymän käynnistäminen Moodlen kautta, kun lti-resource-link-id on eri
+ok pisteiden kirjautuminen LTI:n kautta
+ok vertaisarvioitujen tehtävien sorttaus arvosanojen varianssin mukaan
+
+
+= Koodiaapinen =
+- ohjeistusta review-näkymään opiskelijoille
+- pisteet takaisin plussaan A+-protokollalla
+- pisteet takaisin plussaan LTI-protokollalla
+- jos collaborative-moodissa ei ole muiden palautuksia, niin näytä 'Ei vielä palautuksia'
++ näytä opiskelijan exercises-dashboardissa collaborative-moodissa muiden palautteet pop-uppina
++ thumbnail-viewssä \n -> <br />
++ thumbnail-errorit
++ palautuksen voi poistaa, vaikka on arvionteja
++ jos collaborative-näkymässä on palautuksia, joita ei voi annotoida, anna jokaisen arvioijan luoda oma peer-review
 
 = Soon =
 
@@ -47,6 +67,9 @@ näytä lti-kursseille tuloslistassa lti_user_id
 - lazy loading of pdf pages
 - tutorial mode
 
+In sum mode, if max grades are not set for pages, sending points to A+ will fail. Rubyric should refuse to deliver and display an error message.
+
+In group submission via LTI (session/lti) validate that the user is one of the custom_group_members.
 
 drag'n'drop-palautus
 PDF with variable page size
