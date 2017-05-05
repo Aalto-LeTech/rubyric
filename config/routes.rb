@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     get 'archive'
     post 'delete_reviews'
     post 'send_reviews'
+    get 'download_submissions'
     post 'create_peer_review'
     get 'create_example_submissions'
     #get 'results'

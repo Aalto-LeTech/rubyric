@@ -102,34 +102,32 @@
           <tr>
             <td><%= @groups.size %> groups
             </td>
-            <td>
-              <button class="btn btn-default" id="reviews-select-all" onclick="return false;"> Select all</button>
-              <button class="btn btn-default" id="reviews-select-finished" onclick="return false;">Select finished</button>
-              <button class="btn btn-default" id="reviews-select-none" onclick="return false;">Select none</button>
+            <td colspan="3">
+              <div class="btn-group">
+                <button class="btn btn-default" id="reviews-select-all" onclick="return false;"> Select all</button>
+                <!-- select finished should also unselect unfinished -->
+                <button class="btn btn-default" id="reviews-select-finished" onclick="return false;">Select finished</button>
+                <button class="btn btn-default" id="reviews-select-none" onclick="return false;">Select none</button>
+              </div>
             </td>
-            <td></td>
-            <td></td>
           </tr>
 
           <tr class="spacer">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="4"></td>
           </tr>
 
           <tr>
-            <td>
-            </td>
-            <td>
-              <p>
+            <td></td>
+            <td colspan="3">
+              <div class="btn-group">
                 <button type="submit" class='btn btn-default'>
                   <span class="glyphicon glyphicon-envelop" aria-hidden="true"></span> Deliver selected reviews
                 </button>
-              </p>
+                <a class='btn btn-default' href="<%= exercise_download_submissions_path(@exercise, format: 'csv') %>">
+                  <span class="glyphicon glyphicon-envelop" aria-hidden="true"></span> Download completed reviews
+                </a>
+              </div>
             </td>
-            <td></td>
-            <td></td>
           </tr>
         </tfoot>
       </table>

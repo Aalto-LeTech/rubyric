@@ -311,6 +311,21 @@ class ExercisesController < ApplicationController
     log "send_reviews #{@exercise.id} #{review_ids.size}"
   end
 
+  def download_submissions
+    @exercise = Exercise.find(params[:id])
+    load_course
+    if @course.has_teacher(current_user) || is_admin?(current_user)
+      @headers = ["One", "Two", "Three"]
+
+      respond_to do |format|
+        format.csv { }
+      end
+    else
+      render status: :forbidden
+    end
+    
+  end
+
   # Removes selected submissions and reviews
   #   def remove_selected_submissions
   #     @exercise = Exercise.find(params[:eid])

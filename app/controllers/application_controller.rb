@@ -1,6 +1,7 @@
 require 'custom_logger'
 require 'client_event_logger'
 require 'securerandom.rb'
+require 'csv'
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time

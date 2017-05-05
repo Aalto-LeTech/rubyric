@@ -18,7 +18,7 @@
         <a id="dropdown-<%= submission.id %>" class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false" role="button"><b class="caret"></b></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-<%= submission.id %>">
           <li><%= link_to 'Create new review', review_submission_path(submission.id) %></li>
-          <li><%= link_to 'New submission...', submit_path(:exercise => @exercise.id, :group => group.id) %></li>
+          <li><%= link_to 'New submission...', submit_path(exercise: @exercise.id, group: group.id) %></li>
           <% if @course_instance_exercise_count > 1 %>
             <li><%= link_to 'Move submission...', move_submission_path(submission) %></li>
           <% end %>
@@ -31,7 +31,7 @@
       <!-- Submission -->
       <span <%= submission.late?(@exercise) ? 'class="late"'.html_safe : nil %>><%=l submission.created_at %></span>
       <% unless submission.filename.blank? %>
-        (<%= link_to submission.extension || submission.filename, submission_path(submission.id), :title => submission.filename %>)
+        (<%= link_to submission.extension || submission.filename, submission_path(submission.id), title: submission.filename %>)
       <% end %>
     </td>
 
@@ -51,10 +51,10 @@
             <tr class="submission">
           <% end; row += 1 %>
           <td>
-            <%= check_box 'reviews_checkboxes', review.id, {:class => 'review_check ' + (review.status == 'finished' ? ' review_check_finished' : '')} %>
+            <%= check_box 'reviews_checkboxes', review.id, {class: 'review_check ' + (review.status == 'finished' ? ' review_check_finished' : '')} %>
             
             <% if ['mailed','invalidated'].include?(review.status) %>
-              <%= link_to review.user ? review.user.name : t('collaborative_review'), review_path(review.id, :ref => 'exercises') %>
+              <%= link_to review.user ? review.user.name : t('collaborative_review'), review_path(review.id, ref: 'exercises') %>
             <% else %>
               <%= link_to review.user ? review.user.name : t('collaborative_review'), edit_review_path(review.id) %>
             <% end %>
